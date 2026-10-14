@@ -1,7 +1,3 @@
-
-
-https://github.com/user-attachments/assets/d7de57e2-0e53-4bb4-b7a6-d2aad163cb80
-
 # Atari Breakout
 
 # 1. Background and Problem Definition
