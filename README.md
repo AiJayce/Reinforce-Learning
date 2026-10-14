@@ -125,7 +125,11 @@ The comparison video places Episode 1 on the left and Episode 10000 on the right
 
 
 
-https://github.com/user-attachments/assets/f1432cbf-c544-40a0-9496-9ba60a9c636e
+
+
+
+https://github.com/user-attachments/assets/7f7178f9-b2c2-44da-8755-18ded2ca576a
+
 
 
 
@@ -148,10 +152,4 @@ This experiment implements A3C for Atari Breakout by combining convolutional vis
 The Actor learns action-selection behavior, while the Critic estimates expected returns. Advantage estimation guides policy updates, and entropy regularization supports exploration.
 
 Comparing gameplay videos across training stages provides an intuitive way to inspect behavioral changes. Combined with reward and loss tracking, this approach provides a practical foundation for understanding actor-critic reinforcement learning and comparing A3C with other algorithms, including DQN and A2C.
-
-https://github.com/user-attachments/assets/08ef02df-de2e-4bd0-9417-6615ed213b9c
-
-
-
-https://github.com/user-attachments/assets/830b24d3-3a7d-40a2-a869-25817f883019
 
