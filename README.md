@@ -139,6 +139,8 @@ The comparison provides a qualitative view of the agent's gameplay behavior. Cha
 
 ### Training Metrics
 
+<img width="2560" height="1600" alt="training_metrics" src="https://github.com/user-attachments/assets/2fa3cda2-ebf8-4e18-a194-c0e2d501c6e6" />
+
 - **Episode Reward:** Measures cumulative rewards per episode. Higher rewards generally indicate improved gameplay performance. A 20-episode moving average helps identify overall trends.
 - **Total Training Loss:** Represents the combined optimization objective of the Actor and Critic, including entropy regularization. A decreasing loss does not necessarily imply improved gameplay performance.
 - **Policy and Value Loss:** Policy loss tracks Actor optimization for action selection, while value loss measures the discrepancy between predicted state values and target returns.
@@ -148,9 +150,7 @@ The comparison provides a qualitative view of the agent's gameplay behavior. Cha
 
 Episode reward evaluates actual gameplay performance, while training losses monitor optimization behavior and policy entropy reflects exploration. Interpreting these metrics together provides a more comprehensive assessment of learning progress and training stability.
 
-## Significance
-
-Reward and loss provide complementary information about the training process. Reward evaluates gameplay performance, while loss helps track optimization behavior. Monitoring both metrics makes it possible to distinguish changes in actual performance from changes in the learning objective.
+### code at : https://github.com/AiJayce/Reinforce-Learning/blob/Breakout/atari%20breakout.ipynb
 
 # 4. Conclusion and Significance
 
