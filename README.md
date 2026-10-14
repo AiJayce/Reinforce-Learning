@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/d7de57e2-0e53-4bb4-b7a6-d2aad163cb80
+
 # Atari Breakout
 
 # 1. Background and Problem Definition
@@ -124,7 +128,9 @@ The reward reflects the agent's actual gameplay performance, while the loss trac
 The comparison video places Episode 1 on the left and Episode 10000 on the right to visualize behavioral differences between the initial and later training stages.
 
 
-https://github.com/user-attachments/assets/6372b71f-b222-41e6-91eb-0f172e9aca6c
+
+https://github.com/user-attachments/assets/f1432cbf-c544-40a0-9496-9ba60a9c636e
+
 
 
 The comparison provides a qualitative view of the agent's gameplay behavior. Changes in paddle movement and ball interaction can be inspected to assess whether the learned policy exhibits improved control. However, visual differences alone do not establish superior performance; episode rewards and repeated evaluation trials are needed for quantitative comparison.
