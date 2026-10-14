@@ -1,6 +1,6 @@
 # Cart - pole
 
-<img width="606" height="409" alt="image" src="https://github.com/user-attachments/assets/cc2b9b5a-182a-41e6-b9e8-997bbe2b9201" />
+<img width="806" height="509" alt="image" src="https://github.com/user-attachments/assets/cc2b9b5a-182a-41e6-b9e8-997bbe2b9201" />
 
 # 1. Background and Problem Definition
 
