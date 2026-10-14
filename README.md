@@ -21,15 +21,15 @@ The state consists of visual observations from the Atari Breakout environment. I
 The Actor outputs a probability distribution over possible actions:
 
 $$
-\pi(a_t \mid s_t; \theta)
+\pi(a_t \mid s_t;\theta)
 $$
 
-Here, \(s_t\) represents the current state, \(a_t\) denotes an action, and \(\theta\) represents the Actor network parameters.
+Here, $s_t$ represents the current state, $a_t$ denotes an action, and $\theta$ represents the Actor network parameters.
 
 The Critic estimates the state value:
 
 $$
-V(s_t; \theta_v)
+V(s_t;\theta_v)
 $$
 
 The state value represents the expected cumulative discounted reward from the current state under the learned policy.
@@ -66,10 +66,10 @@ $$
 
 Where:
 
-- \(r_t\): Immediate reward
-- \(\gamma\): Discount factor
-- \(n\): Number of steps used to estimate the return
-- \(V(s_{t+n})\): Bootstrap estimate of the future state value
+- $r_t$: Immediate reward
+- $\gamma$: Discount factor
+- $n$: Number of steps used to estimate the return
+- $V(s_{t+n})$: Bootstrap estimate of the future state value
 
 If the episode terminates, the bootstrap value is excluded.
 
@@ -80,33 +80,31 @@ Positive advantages encourage the Actor to increase the probability of the selec
 The Actor is optimized using a policy-gradient objective based on the estimated advantage:
 
 $$
-L_{\mathrm{policy}}
-=-\log \pi(a_t \mid s_t) A_t
+L_{\mathrm{policy}}=-\log\pi(a_t\mid s_t)A_t
 $$
 
 The Critic minimizes the discrepancy between its predicted state value and the estimated return:
 
 $$
-L_{\mathrm{value}}
-=\left(R_t-V(s_t)\right)^2
+L_{\mathrm{value}}=(R_t-V(s_t))^2
 $$
 
 The combined objective incorporates entropy regularization:
 
 $$
-L=L_{\mathrm{policy}}
-+c_v L_{\mathrm{value}}
--c_e H(\pi)
+L=L_{\mathrm{policy}}+
+c_vL_{\mathrm{value}}-
+c_eH(\pi)
 $$
 
-Here, \(c_v\) and \(c_e\) control the contributions of the value loss and entropy term, respectively.
+Here, $c_v$ and $c_e$ control the contributions of the value loss and entropy term, respectively.
 
 ## 2.5. Entropy Regularization: Encouraging Exploration
 
 Policy entropy measures the uncertainty of the Actor's action probability distribution.
 
 $$
-H(\pi)=-\sum_a \pi(a \mid s)\log \pi(a \mid s)
+H(\pi)=-\sum_a\pi(a\mid s)\log\pi(a\mid s)
 $$
 
 Higher entropy indicates a more distributed action probability distribution, encouraging exploration. Lower entropy indicates a more concentrated distribution and more deterministic action selection.
@@ -130,7 +128,7 @@ The agent is trained using multiple parallel workers and multi-step return estim
 | Maximum training episodes | 10,000 |
 | Number of workers | 4 |
 | N-step return | 5 |
-| Discount factor (\(\gamma\)) | 0.99 |
+| Discount factor ($\gamma$) | 0.99 |
 | Learning rate | 0.0007 |
 | Entropy coefficient | 0.01 |
 | Value loss coefficient | 0.5 |
@@ -154,7 +152,7 @@ During evaluation, the trained policy selects actions according to the Actor's o
 
 The videos provide a qualitative comparison of gameplay behavior, while cumulative rewards provide a quantitative measure of performance. Evaluation rewards may differ from training rewards because evaluation uses separate environment interactions.
 
-# 3. Atari Breakout Results
+# 3. Conclusion
 
 ## Atari Breakout Video
 
@@ -189,9 +187,7 @@ A moving average helps identify overall learning trends by reducing short-term f
 
 Episode reward evaluates actual gameplay performance, while training losses monitor optimization behavior and policy entropy reflects exploration. Interpreting these metrics together provides a more comprehensive assessment of learning progress and training stability.
 
-### Code
-
-[Atari Breakout A3C Implementation](https://github.com/AiJayce/Reinforce-Learning/blob/Breakout/atari%20breakout.ipynb)
+### code at : https://github.com/AiJayce/Reinforce-Learning/blob/Breakout/atari%20breakout.ipynb
 
 # 4. Conclusion and Significance
 
