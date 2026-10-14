@@ -20,17 +20,17 @@ The state consists of visual observations from the Atari Breakout environment. I
 
 The Actor outputs a probability distribution over possible actions:
 
-\[
-\pi(a_t \mid s_t;\theta)
-\]
+$$
+\pi(a_t \mid s_t; \theta)
+$$
 
 Here, \(s_t\) represents the current state, \(a_t\) denotes an action, and \(\theta\) represents the Actor network parameters.
 
 The Critic estimates the state value:
 
-\[
-V(s_t;\theta_v)
-\]
+$$
+V(s_t; \theta_v)
+$$
 
 The state value represents the expected cumulative discounted reward from the current state under the learned policy.
 
@@ -49,20 +49,20 @@ By combining policy optimization with value estimation, A3C learns an action-sel
 
 The advantage function measures whether an action produces a better outcome than expected from the current state.
 
-\[
+$$
 A(s_t,a_t)=Q(s_t,a_t)-V(s_t)
-\]
+$$
 
 A3C estimates the advantage using multi-step returns:
 
-\[
+$$
 R_t=\sum_{k=0}^{n-1}\gamma^k r_{t+k}
 +\gamma^n V(s_{t+n})
-\]
+$$
 
-\[
+$$
 A_t=R_t-V(s_t)
-\]
+$$
 
 Where:
 
@@ -79,23 +79,25 @@ Positive advantages encourage the Actor to increase the probability of the selec
 
 The Actor is optimized using a policy-gradient objective based on the estimated advantage:
 
-\[
-L_{\mathrm{policy}}=-\log\pi(a_t\mid s_t)A_t
-\]
+$$
+L_{\mathrm{policy}}
+=-\log \pi(a_t \mid s_t) A_t
+$$
 
 The Critic minimizes the discrepancy between its predicted state value and the estimated return:
 
-\[
-L_{\mathrm{value}}=(R_t-V(s_t))^2
-\]
+$$
+L_{\mathrm{value}}
+=\left(R_t-V(s_t)\right)^2
+$$
 
 The combined objective incorporates entropy regularization:
 
-\[
-L=L_{\mathrm{policy}}+
-c_vL_{\mathrm{value}}-
-c_eH(\pi)
-\]
+$$
+L=L_{\mathrm{policy}}
++c_v L_{\mathrm{value}}
+-c_e H(\pi)
+$$
 
 Here, \(c_v\) and \(c_e\) control the contributions of the value loss and entropy term, respectively.
 
@@ -103,9 +105,9 @@ Here, \(c_v\) and \(c_e\) control the contributions of the value loss and entrop
 
 Policy entropy measures the uncertainty of the Actor's action probability distribution.
 
-\[
-H(\pi)=-\sum_a\pi(a\mid s)\log\pi(a\mid s)
-\]
+$$
+H(\pi)=-\sum_a \pi(a \mid s)\log \pi(a \mid s)
+$$
 
 Higher entropy indicates a more distributed action probability distribution, encouraging exploration. Lower entropy indicates a more concentrated distribution and more deterministic action selection.
 
@@ -152,7 +154,7 @@ During evaluation, the trained policy selects actions according to the Actor's o
 
 The videos provide a qualitative comparison of gameplay behavior, while cumulative rewards provide a quantitative measure of performance. Evaluation rewards may differ from training rewards because evaluation uses separate environment interactions.
 
-# 3. Conclusion
+# 3. Atari Breakout Results
 
 ## Atari Breakout Video
 
@@ -160,15 +162,7 @@ The videos provide a qualitative comparison of gameplay behavior, while cumulati
 
 The comparison video places Episode 1 on the left and Episode 10000 on the right to visualize behavioral differences between the initial and later training stages.
 
-
-
-
-
-
 https://github.com/user-attachments/assets/7f7178f9-b2c2-44da-8755-18ded2ca576a
-
-
-
 
 The comparison provides a qualitative view of the agent's gameplay behavior. Changes in paddle movement and ball interaction can be inspected to assess whether the learned policy exhibits improved control. However, visual differences alone do not establish superior performance; episode rewards and repeated evaluation trials are needed for quantitative comparison.
 
@@ -195,7 +189,9 @@ A moving average helps identify overall learning trends by reducing short-term f
 
 Episode reward evaluates actual gameplay performance, while training losses monitor optimization behavior and policy entropy reflects exploration. Interpreting these metrics together provides a more comprehensive assessment of learning progress and training stability.
 
-### code at : https://github.com/AiJayce/Reinforce-Learning/blob/Breakout/atari%20breakout.ipynb
+### Code
+
+[Atari Breakout A3C Implementation](https://github.com/AiJayce/Reinforce-Learning/blob/Breakout/atari%20breakout.ipynb)
 
 # 4. Conclusion and Significance
 
@@ -204,4 +200,3 @@ This experiment implements A3C for Atari Breakout by combining convolutional vis
 The Actor learns action-selection behavior, while the Critic estimates expected returns. Advantage estimation guides policy updates, and entropy regularization supports exploration.
 
 Comparing gameplay videos across training stages provides an intuitive way to inspect behavioral changes. Combined with reward and loss tracking, this approach provides a practical foundation for understanding actor-critic reinforcement learning and comparing A3C with other algorithms, including DQN and A2C.
-
