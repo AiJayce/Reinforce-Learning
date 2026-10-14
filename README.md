@@ -10,6 +10,8 @@ A key characteristic of reinforcement learning is its ability to optimize a sequ
 
 While studying reinforcement learning, I became particularly interested in its potential applications in bioinformatics. Although reinforcement learning has already been applied to certain areas of life sciences, including drug discovery and protein design, its potential in single-cell transcriptomics, gene regulatory network inference, and cellular differentiation trajectory analysis remains worth exploring. By incorporating biological knowledge and analytical objectives into reward functions, reinforcement learning could complement conventional statistical methods and supervised learning approaches. For instance, an agent could explore cellular state transitions while accounting for transcriptional continuity and biological constraints, or evaluate the downstream effects of gene perturbations through sequential decision-making. Such applications would require carefully designed reward functions, rigorous comparisons with existing methods, and independent biological validation. Nevertheless, I believe that adapting the decision-making and trajectory-search capabilities of reinforcement learning to biological data could open up promising new directions in bioinformatics research.
 
+
+---------
 # R-L practice
 
 To establish a foundation in reinforcement learning (RL) for its application to bioinformatics, two tutorials were conducted using different RL algorithms: DQN and A3C. Each tutorial explored how an agent learns through states, actions, and rewards.
