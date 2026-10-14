@@ -180,6 +180,8 @@ The reward plot evaluates the agent's actual control performance, while the loss
 
 The 50-episode moving average helps identify overall trends by reducing short-term fluctuations. However, a low loss alone does not guarantee a high reward, so both metrics should be interpreted together.
 
+### code at : https://github.com/AiJayce/Reinforce-Learning/blob/Cart-pole/Cartpole.ipynb
+
 # 4. Conclusion and Significance
 
 This experiment implements the core DQN learning cycle: state observation, action selection, reward collection, and iterative Q-value updates.
