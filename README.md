@@ -1,5 +1,7 @@
 # Cart - pole
 
+<img width="806" height="409" alt="image" src="https://github.com/user-attachments/assets/c9906658-92e3-4864-bd9e-f2a543aba6a7" />
+
 # 1. Background and Problem Definition
 
 CartPole is a control problem in which an agent must balance a pole attached to a cart moving along a horizontal track. The agent observes the cart's position and velocity, as well as the pole's angle and angular velocity, and applies force to move the cart either left or right.
