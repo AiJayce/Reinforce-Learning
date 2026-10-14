@@ -156,7 +156,13 @@ During evaluation, random exploration is disabled, and the agent consistently se
 
 The videos provide a qualitative comparison of the learned policies, while cumulative rewards provide a quantitative measure of performance. Because evaluation episodes use a separate execution from training, evaluation rewards may differ from the rewards recorded during training.
 
-# 3. Conclusion and Significance
+# 3. Conclusion
+
+## Cart-pole vieo
+
+https://github.com/user-attachments/assets/d96be1b6-0f14-4015-b6fc-d6a50cd89f96
+
+# 4. Conclusion and Significance
 
 This experiment implements the core DQN learning cycle: state observation, action selection, reward collection, and iterative Q-value updates.
 
