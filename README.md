@@ -4,118 +4,153 @@
 
 # 1. Background and Problem Definition
 
-Atari Breakout is a reinforcement learning task in which an agent controls a paddle to bounce a ball and destroy bricks. The agent observes the game screen and selects actions to maximize cumulative rewards.
+Atari Breakout is a control problem in which an agent controls a paddle to bounce a ball and destroy bricks. The agent observes visual information from the game environment and learns to position the paddle to maximize cumulative rewards.
 
-Reinforcement Learning (RL) enables an agent to learn a control policy through interactions with an environment. In this experiment, Asynchronous Advantage Actor-Critic (A3C) is used to learn a gameplay strategy through parallel environment interactions.
+Reinforcement Learning (RL) enables an agent to learn a control policy through interactions with an environment. In this experiment, Asynchronous Advantage Actor-Critic (A3C) is used to learn a gameplay strategy directly from image observations.
 
-The objective is to maximize cumulative rewards by learning to control the paddle and keep the ball in play while breaking bricks.
+The objective is to destroy as many bricks as possible while preventing the ball from passing the paddle.
 
 # 2. Algorithm Description: Asynchronous Advantage Actor-Critic (A3C)
 
-A3C combines policy optimization with value estimation using two components: an Actor and a Critic. The Actor learns which actions to take, while the Critic estimates the expected cumulative reward associated with the current state.
+A3C combines policy-based learning with value estimation. The Actor learns a policy for selecting actions, while the Critic estimates the expected cumulative reward of a given state. Multiple workers interact with separate environment instances and asynchronously update a shared global network.
 
 ## 2.1. State Space and Action Selection
 
-The state consists of four consecutive grayscale frames, resized to 84 × 84 pixels and stacked to capture temporal information about the game.
+The state consists of visual observations from the Atari Breakout environment. Image preprocessing and frame stacking provide information about the ball's movement and the positions of the paddle and bricks.
 
-The state representation is:
+The Actor outputs a probability distribution over possible actions:
 
-$$
-s_t \in \mathbb{R}^{4 \times 84 \times 84}
-$$
+\[
+\pi(a_t \mid s_t;\theta)
+\]
 
-The Actor outputs a probability distribution over available actions:
+Here, \(s_t\) represents the current state, \(a_t\) denotes an action, and \(\theta\) represents the Actor network parameters.
 
-$$
-\pi(a_t \mid s_t; \theta)
-$$
+The Critic estimates the state value:
 
-The agent selects an action according to the policy and receives a reward and the next state from the environment.
+\[
+V(s_t;\theta_v)
+\]
 
-The neural network consists of three convolutional layers, a fully connected layer with 512 neurons, and separate Actor and Critic output layers.
+The state value represents the expected cumulative discounted reward from the current state under the learned policy.
 
-## 2.2. Advantage Estimation
+## 2.2. Actor-Critic Architecture
 
-The advantage function measures whether an action produces a better or worse outcome than expected under the current value estimate.
+A3C consists of two complementary learning components:
 
-$$
-A_t = R_t - V(s_t)
-$$
+- Actor: Learns the probability of selecting each action.
+- Critic: Estimates the value of the current state to evaluate the Actor's decisions.
 
-The multi-step return is calculated as:
+The Actor increases the probability of actions that produce higher-than-expected returns, while the Critic improves its state-value estimates.
 
-$$
-R_t = \sum_{k=0}^{n-1}\gamma^k r_{t+k}
+By combining policy optimization with value estimation, A3C learns an action-selection strategy without explicitly estimating a Q-value for every possible action.
+
+## 2.3. Advantage Estimation
+
+The advantage function measures whether an action produces a better outcome than expected from the current state.
+
+\[
+A(s_t,a_t)=Q(s_t,a_t)-V(s_t)
+\]
+
+A3C estimates the advantage using multi-step returns:
+
+\[
+R_t=\sum_{k=0}^{n-1}\gamma^k r_{t+k}
 +\gamma^n V(s_{t+n})
-$$
+\]
 
-Here, \(r_t\) represents the immediate reward, \(\gamma\) is the discount factor, and \(V(s_t)\) is the Critic's state-value estimate.
+\[
+A_t=R_t-V(s_t)
+\]
 
-The advantage guides policy updates by evaluating the relative quality of the selected action.
+Where:
 
-## 2.3. Policy Loss and Value Loss
+- \(r_t\): Immediate reward
+- \(\gamma\): Discount factor
+- \(n\): Number of steps used to estimate the return
+- \(V(s_{t+n})\): Bootstrap estimate of the future state value
 
-A3C optimizes the Actor and Critic using separate loss terms.
+If the episode terminates, the bootstrap value is excluded.
 
-The policy loss encourages actions with positive advantages:
+Positive advantages encourage the Actor to increase the probability of the selected action, while negative advantages encourage it to decrease that probability.
 
-$$
+## 2.4. Policy and Value Loss
+
+The Actor is optimized using a policy-gradient objective based on the estimated advantage:
+
+\[
 L_{\mathrm{policy}}=-\log\pi(a_t\mid s_t)A_t
-$$
+\]
 
-The value loss measures the difference between the predicted state value and the target return:
+The Critic minimizes the discrepancy between its predicted state value and the estimated return:
 
-$$
+\[
 L_{\mathrm{value}}=(R_t-V(s_t))^2
-$$
+\]
 
-Entropy regularization encourages exploration by discouraging premature convergence to a deterministic policy.
+The combined objective incorporates entropy regularization:
 
-The combined objective is:
-
-$$
+\[
 L=L_{\mathrm{policy}}+
 c_vL_{\mathrm{value}}-
 c_eH(\pi)
-$$
+\]
 
-where \(c_v\) and \(c_e\) control the contributions of the value loss and entropy regularization.
+Here, \(c_v\) and \(c_e\) control the contributions of the value loss and entropy term, respectively.
 
-## 2.4. Asynchronous Training
+## 2.5. Entropy Regularization: Encouraging Exploration
 
-A3C uses multiple workers to interact with separate environment instances. Each worker collects a sequence of transitions and calculates gradients from its local experience.
+Policy entropy measures the uncertainty of the Actor's action probability distribution.
 
-The gradients are applied to the global model, allowing workers to contribute experiences from different trajectories. This parallel training approach can improve experience diversity and reduce temporal correlation compared with a single sequential interaction stream.
+\[
+H(\pi)=-\sum_a\pi(a\mid s)\log\pi(a\mid s)
+\]
 
-## 2.5. Training Configuration and Evaluation
+Higher entropy indicates a more distributed action probability distribution, encouraging exploration. Lower entropy indicates a more concentrated distribution and more deterministic action selection.
 
-The training configuration is summarized below.
+Entropy regularization helps prevent the policy from becoming overly deterministic before sufficient experience has been collected.
+
+## 2.6. Asynchronous Training: Parallel Environment Interaction
+
+A3C uses multiple workers to interact with separate environment instances and collect training experiences in parallel.
+
+Each worker computes gradients from its local interactions and applies updates to the shared global network. This approach increases the diversity of collected experiences and reduces dependence on consecutive observations from a single environment trajectory.
+
+Unlike DQN, standard A3C does not require an experience replay buffer or a separate target network. Its learning process relies on policy gradients, value estimation, and asynchronous updates.
+
+## 2.7. Training Configuration and Evaluation
+
+The agent is trained using multiple parallel workers and multi-step return estimation.
 
 | Parameter | Value |
-|---|---:|
-| Environment | ALE/Breakout-v5 |
-| Algorithm | A3C |
-| Episodes | 10,000 |
+|:---|:---|
+| Maximum training episodes | 10,000 |
 | Number of workers | 4 |
-| Rollout steps | 5 |
+| N-step return | 5 |
 | Discount factor (\(\gamma\)) | 0.99 |
 | Learning rate | 0.0007 |
 | Entropy coefficient | 0.01 |
 | Value loss coefficient | 0.5 |
 | Maximum gradient norm | 40 |
-| Input frame size | 84 × 84 |
-| Number of stacked frames | 4 |
-| Fully connected layer | 512 neurons |
-| Optimizer | Adam |
 
 During training, the following metrics are recorded:
 
 - Episode reward: Total cumulative reward obtained in each episode.
-- Policy loss: Measures the policy optimization objective.
-- Value loss: Measures the difference between predicted state values and target returns.
-- Entropy: Measures the degree of stochasticity in the action policy.
+- Total training loss: Combined optimization objective of the Actor and Critic.
+- Policy loss: Measures the Actor's policy-gradient optimization objective.
+- Value loss: Measures the discrepancy between predicted state values and target returns.
+- Policy entropy: Measures the uncertainty of the action probability distribution.
 
-The reward reflects the agent's actual gameplay performance, while the loss tracks the optimization process. A decreasing loss does not necessarily indicate improved gameplay, so both metrics should be interpreted together.
+## 2.8. Policy Visualization
+
+Videos are generated to compare the agent's behavior before and after training.
+
+The initial episode demonstrates the behavior of an untrained policy, while the trained episode demonstrates the policy after repeated environment interactions.
+
+During evaluation, the trained policy selects actions according to the Actor's output distribution without additional random exploration.
+
+The videos provide a qualitative comparison of gameplay behavior, while cumulative rewards provide a quantitative measure of performance. Evaluation rewards may differ from training rewards because evaluation uses separate environment interactions.
 
 # 3. Conclusion
 
@@ -145,6 +180,16 @@ The comparison provides a qualitative view of the agent's gameplay behavior. Cha
 - **Total Training Loss:** Represents the combined optimization objective of the Actor and Critic, including entropy regularization. A decreasing loss does not necessarily imply improved gameplay performance.
 - **Policy and Value Loss:** Policy loss tracks Actor optimization for action selection, while value loss measures the discrepancy between predicted state values and target returns.
 - **Policy Entropy:** Measures the uncertainty of the action probability distribution. Higher entropy indicates more distributed action probabilities, while lower entropy indicates a more deterministic policy.
+
+### Learning Metrics
+
+The training metrics are visualized to examine changes in cumulative reward, optimization losses, and policy entropy throughout training.
+
+### Reward
+
+Episode reward measures the agent's cumulative performance in the environment. Higher rewards generally indicate a more effective strategy for destroying bricks and controlling the paddle.
+
+A moving average helps identify overall learning trends by reducing short-term fluctuations in episode rewards.
 
 ### Significance
 
