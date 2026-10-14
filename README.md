@@ -1,5 +1,7 @@
 # Atari Breakout
 
+<img width="828" height="681" alt="image" src="https://github.com/user-attachments/assets/0bcc8e74-e1c4-4558-8084-d27a9d3d08ee" />
+
 # 1. Background and Problem Definition
 
 Atari Breakout is a reinforcement learning task in which an agent controls a paddle to bounce a ball and destroy bricks. The agent observes the game screen and selects actions to maximize cumulative rewards.
