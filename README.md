@@ -135,11 +135,16 @@ https://github.com/user-attachments/assets/7f7178f9-b2c2-44da-8755-18ded2ca576a
 
 The comparison provides a qualitative view of the agent's gameplay behavior. Changes in paddle movement and ball interaction can be inspected to assess whether the learned policy exhibits improved control. However, visual differences alone do not establish superior performance; episode rewards and repeated evaluation trials are needed for quantitative comparison.
 
-## Reward vs. Loss
+### Training Metrics
 
-Reward measures the agent's cumulative performance in the environment. Higher rewards generally indicate that the agent has maintained gameplay for longer or destroyed more bricks, depending on the environment's reward definition.
+- **Episode Reward:** Measures cumulative rewards per episode. Higher rewards generally indicate improved gameplay performance. A 20-episode moving average helps identify overall trends.
+- **Total Training Loss:** Represents the combined optimization objective of the Actor and Critic, including entropy regularization. A decreasing loss does not necessarily imply improved gameplay performance.
+- **Policy and Value Loss:** Policy loss tracks Actor optimization for action selection, while value loss measures the discrepancy between predicted state values and target returns.
+- **Policy Entropy:** Measures the uncertainty of the action probability distribution. Higher entropy indicates more distributed action probabilities, while lower entropy indicates a more deterministic policy.
 
-Loss measures the optimization objective used to update the Actor and Critic. A decreasing loss may indicate improved fitting to the learning targets, but does not necessarily imply higher rewards.
+### Significance
+
+Episode reward evaluates actual gameplay performance, while training losses monitor optimization behavior and policy entropy reflects exploration. Interpreting these metrics together provides a more comprehensive assessment of learning progress and training stability.
 
 ## Significance
 
