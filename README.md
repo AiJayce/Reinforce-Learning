@@ -162,6 +162,24 @@ The videos provide a qualitative comparison of the learned policies, while cumul
 
 https://github.com/user-attachments/assets/d96be1b6-0f14-4015-b6fc-d6a50cd89f96
 
+This video demonstrates CartPole training using DQN. Initially, I expected the reward to increase consistently with the number of training episodes. However, I observed that the cart could still fail upon reaching the track boundary, indicating that more training episodes do not necessarily guarantee better performance. Increasing the number of training episodes or designing a reward function that discourages the cart from reaching the boundary may lead to improved performance.
+
+## Learning rate plot
+
+<img width="999" height="352" alt="그림1" src="https://github.com/user-attachments/assets/aa75e2ed-a016-4d34-ae25-d94ba398f0e7" />
+
+### Reward vs. Loss
+
+Reward: Measures the agent's performance in the environment. A higher cumulative reward indicates that the cart maintains balance for more time steps.
+
+Loss: Measures the difference between the predicted Q-values and their target values. A decreasing loss indicates that the network's predictions are converging toward the learning targets, but does not necessarily mean that the agent's actual performance is improving.
+
+### Significance
+
+The reward plot evaluates the agent's actual control performance, while the loss plot tracks the stability of the learning process. By monitoring both metrics, it is possible to determine whether the agent is improving its performance and whether the Q-value learning process is stabilizing.
+
+The 50-episode moving average helps identify overall trends by reducing short-term fluctuations. However, a low loss alone does not guarantee a high reward, so both metrics should be interpreted together.
+
 # 4. Conclusion and Significance
 
 This experiment implements the core DQN learning cycle: state observation, action selection, reward collection, and iterative Q-value updates.
